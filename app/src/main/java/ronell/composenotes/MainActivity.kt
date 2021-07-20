@@ -9,10 +9,14 @@ import androidx.compose.material.Surface
 import ronell.composenotes.ui.screens.Home
 import ronell.composenotes.ui.theme.ComposeNotesTheme
 import ronell.composenotes.ui.viewmodel.NoteViewModel
+import ronell.composenotes.ui.viewmodel.NoteViewModelFactory
 
 class MainActivity : ComponentActivity() {
 
-    private val viewModel: NoteViewModel by viewModels()
+    private val viewModel: NoteViewModel by viewModels() {
+        NoteViewModelFactory((application as NoteApplication).repository)
+    }
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

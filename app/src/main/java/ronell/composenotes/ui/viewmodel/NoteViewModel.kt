@@ -1,9 +1,6 @@
 package ronell.composenotes.ui.viewmodel
 
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.ViewModel
-import androidx.lifecycle.asLiveData
-import androidx.lifecycle.viewModelScope
+import androidx.lifecycle.*
 import kotlinx.coroutines.launch
 import ronell.composenotes.db.Note
 import ronell.composenotes.repository.NoteRepository
@@ -21,5 +18,15 @@ class NoteViewModel(private val repository: NoteRepository) : ViewModel() {
 
     fun deleteNote(note: Note) = viewModelScope.launch {
         repository.deleteNote(note)
+    }
+}
+
+class NoteViewModelFactory(private val repository: NoteRepository) : ViewModelProvider.Factory {
+    override fun <T : ViewModel> create(modelClass: Class<T>): T {
+        if (modelClass.isAssignableFrom(NoteViewModel::class.java)) {
+            @Suppress("UNCHECKED_CAST")
+            return NoteViewModel(repository) as T
+        }
+        throw IllegalArgumentException("Unknown ViewModel class")
     }
 }
