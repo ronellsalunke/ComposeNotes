@@ -57,14 +57,15 @@ dependencies {
     implementation("androidx.compose.ui:ui:${rootProject.extra["compose_version"]}")
     implementation("androidx.compose.material:material:${rootProject.extra["compose_version"]}")
     implementation("androidx.compose.ui:ui-tooling:${rootProject.extra["compose_version"]}")
-    implementation("androidx.activity:activity-compose:1.3.0-rc02")
+    implementation("androidx.compose.runtime:runtime-livedata:${rootProject.extra["compose_version"]}")
+    implementation("androidx.activity:activity-compose:1.3.0")
 
     //Lifecycle
     implementation("androidx.lifecycle:lifecycle-runtime-ktx:2.3.1")
     implementation("androidx.lifecycle:lifecycle-livedata-ktx:2.3.1")
 
     //Navigation
-    implementation("androidx.navigation:navigation-compose:2.4.0-alpha04")
+    implementation("androidx.navigation:navigation-compose:2.4.0-alpha05")
 
     // Room
     implementation("androidx.room:room-runtime:2.3.0")
