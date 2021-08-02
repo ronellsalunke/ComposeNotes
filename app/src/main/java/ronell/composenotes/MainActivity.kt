@@ -4,12 +4,9 @@ import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.viewModels
-import androidx.compose.foundation.layout.padding
 import androidx.compose.material.MaterialTheme
-import androidx.compose.material.Scaffold
 import androidx.compose.material.Surface
 import androidx.compose.runtime.Composable
-import androidx.compose.ui.Modifier
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
@@ -41,10 +38,8 @@ class MainActivity : ComponentActivity() {
 @Composable
 fun NoteIt(viewModel: NoteViewModel) {
     val navController = rememberNavController()
-    Scaffold { innerPadding ->
-        NavHost(navController, "home", Modifier.padding(innerPadding)) {
-            composable("home") { Home(viewModel, navController) }
-            composable("edit") { Edit() }
-        }
+    NavHost(navController, startDestination = "home") {
+        composable(route = "home") { Home(viewModel, navController) }
+        composable(route = "edit") { Edit(viewModel, navController) }
     }
 }
