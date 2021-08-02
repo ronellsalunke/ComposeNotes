@@ -1,12 +1,15 @@
 package ronell.composenotes.ui.screens
 
-import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.*
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.MutableState
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.twotone.ArrowBack
+import androidx.compose.material.icons.twotone.Delete
+import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color.Companion.Transparent
 import androidx.compose.ui.text.input.ImeAction
@@ -15,28 +18,68 @@ import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.navigation.NavController
+import ronell.composenotes.db.Note
+import ronell.composenotes.ui.viewmodel.NoteViewModel
 
 @Composable
-fun Edit() {
+fun Edit(viewModel: NoteViewModel, navController: NavController) {
     val noteTitle = remember { mutableStateOf(TextFieldValue()) }
     val noteBody = remember { mutableStateOf(TextFieldValue()) }
+    val snackBarVisibility = remember { mutableStateOf(false) }
 
     Scaffold(
         topBar = {
             TopAppBar(
                 elevation = 0.dp,
-                // TODO: add navigate up logic
-            ) {
+                title = {
+                    Text(text = "Edit")
+                },
+                navigationIcon = {
+                    IconButton(onClick = {
+                        if (noteTitle.value.text.isNotEmpty() && noteBody.value.text.isNotEmpty()) {
+                            viewModel.insertNote(
+                                Note(noteTitle.value.text, noteBody.value.text)
+                            )
+                        }
+                        navController.popBackStack()
+                    }) {
+                        Icon(Icons.TwoTone.ArrowBack, contentDescription = "Back")
+                    }
+                },
+                actions = {
+                    IconButton(onClick = {
+                        if (noteTitle.value.text.isEmpty() && noteBody.value.text.isEmpty()) {
+                            snackBarVisibility.value = true
+                        } else {
+                            viewModel.deleteNote(
+                                Note(noteTitle.value.text, noteBody.value.text)
+                            )
+                            navController.popBackStack()
+                        }
+                    }) {
+                        Icon(Icons.TwoTone.Delete, contentDescription = "Delete note")
+                    }
+                },
+            )
+        },
+        snackbarHost = {
+            if (snackBarVisibility.value) {
+                Snackbar(modifier = Modifier.padding(10.dp)) {
+                    Text(text = "Empty note!")
+                }
             }
         }
     ) {
         EditFields(noteTitle, noteBody)
-        // TODO: add saving/updating/deleting logic
     }
 }
 
 @Composable
-fun EditFields(noteTitle: MutableState<TextFieldValue>, noteBody: MutableState<TextFieldValue>) {
+fun EditFields(
+    noteTitle: MutableState<TextFieldValue>,
+    noteBody: MutableState<TextFieldValue>
+) {
     Column(
         modifier = Modifier
             .fillMaxSize()
