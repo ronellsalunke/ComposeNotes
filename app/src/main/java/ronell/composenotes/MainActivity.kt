@@ -10,17 +10,17 @@ import androidx.compose.runtime.Composable
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
+import dagger.hilt.android.AndroidEntryPoint
 import ronell.composenotes.ui.screens.Edit
 import ronell.composenotes.ui.screens.Home
 import ronell.composenotes.ui.theme.ComposeNotesTheme
 import ronell.composenotes.ui.viewmodel.NoteViewModel
-import ronell.composenotes.ui.viewmodel.NoteViewModelFactory
 
+
+@AndroidEntryPoint
 class MainActivity : ComponentActivity() {
 
-    private val viewModel: NoteViewModel by viewModels {
-        NoteViewModelFactory((application as NoteApplication).repository)
-    }
+    private val viewModel: NoteViewModel by viewModels()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

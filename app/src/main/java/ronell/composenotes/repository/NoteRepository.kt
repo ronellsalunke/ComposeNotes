@@ -3,8 +3,11 @@ package ronell.composenotes.repository
 import kotlinx.coroutines.flow.Flow
 import ronell.composenotes.db.Note
 import ronell.composenotes.db.NoteDao
+import javax.inject.Inject
+import javax.inject.Singleton
 
-class NoteRepository(private val dao: NoteDao) {
+@Singleton
+class NoteRepository @Inject constructor(private val dao: NoteDao) {
     val getNotes: Flow<List<Note>> = dao.getAllNotes()
 
     suspend fun insertNote(note: Note) = dao.insert(note)
