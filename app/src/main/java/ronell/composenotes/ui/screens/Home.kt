@@ -1,5 +1,6 @@
 package ronell.composenotes.ui.screens
 
+import android.annotation.SuppressLint
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -10,17 +11,18 @@ import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.twotone.Create
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.livedata.observeAsState
+import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import ronell.composenotes.db.Note
 import ronell.composenotes.ui.viewmodel.NoteViewModel
 
+@SuppressLint("UnusedMaterialScaffoldPaddingParameter")
 @Composable
 fun Home(viewModel: NoteViewModel, navController: NavController) {
-    val getAllNotes by viewModel.allNotes.observeAsState()
+
+    val getAllNotes = viewModel.allNotes.collectAsState().value
 
     Scaffold(
         topBar = {
@@ -39,12 +41,12 @@ fun Home(viewModel: NoteViewModel, navController: NavController) {
             }
         }
     ) {
-        getAllNotes?.let { it -> NoteCardList(it) }
+        NoteCardList(getAllNotes, navController)
     }
 }
 
 @Composable
-fun NoteCardList(notes: List<Note>) {
+fun NoteCardList(notes: List<Note>, navController: NavController) {
     Column(
         modifier = Modifier
             .fillMaxSize()
